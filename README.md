@@ -6,9 +6,9 @@
 
 ## Installation / Dependencies
 
-[Brownie](https://eth-brownie.readthedocs.io/en/stable/install.html)
-[Infura API Key](https://infura.io/)
-[Etherscan API Key](https://etherscan.io/)
+- [Brownie](https://eth-brownie.readthedocs.io/en/stable/install.html)
+- [Infura API Key](https://infura.io/)
+- [Etherscan API Key](https://etherscan.io/)
 
 
 
