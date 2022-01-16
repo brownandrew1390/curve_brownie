@@ -1,10 +1,10 @@
-from brownie import Contract, accounts
+from brownie import Contract, accounts, interface
 from brownie_tokens import MintableForkToken
 
 def main():
     dai_address = "0x6b175474e89094c44da98b954eedeac495271d0f"
     usdc_address = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
-    registry_address = "0x7D86446dDb609eD0F5f8684AcF30380a356b2B4c"
+    registry_address = "0x7002B727Ef8F5571Cb5F9D70D13DBEEb4dFAe9d1"
     amount = 100_000 * 10 ** 18
     dai = MintableForkToken(dai_address)
     dai._mint_for_testing(accounts[0], amount)
@@ -20,3 +20,16 @@ def main():
         [amount,0,0], 0, 
         {'from': accounts[0]}
     )
+
+    gauges = registry.get_gauges(pool_address)
+    gauge_address = gauges[0][0]
+    gauge_contract = interface.LiquidityGauge(gauge_address)
+    
+    lp_token = MintableForkToken(gauge_contract.lp_token())
+    lp_token.approve(gauge_address, amount, {'from': accounts[0]})
+    gauge_contract.deposit(
+        lp_token.balanceOf(accounts[0]),
+        {'from': accounts[0]}
+    )
+
+
