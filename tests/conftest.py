@@ -14,43 +14,50 @@ def isolate(fn_isolation):
 
 @pytest.fixture(scope="module")
 def margarita(Token, accounts):
-    return Token.deploy("Margarita", "MARG", 18, 1e21, {'from': accounts[0]})
+    return Token.deploy("Margarita", "MARG", 18, 1e21, {"from": accounts[0]})
+
 
 @pytest.fixture(scope="module")
 def alice(accounts):
     return accounts[0]
 
+
 @pytest.fixture(scope="module")
 def bob(accounts):
     return accounts[1]
 
-def load_contract(address):
+
+def load_contract(addr):
     try:
-        cont = Contract(address)
+        cont = Contract(addr)
     except ValueError:
-        cont = Contract.from_explorer(address)
+        cont = Contract.from_explorer(addr)
     return cont
+
 
 @pytest.fixture(scope="module")
 def registry():
-    return load_contract("0x7002B727Ef8F5571Cb5F9D70D13DBEEb4dFAe9d1")
+    return load_contract(Contract('0x0000000022d53366457f9d5e68ec105046fc4383').get_registry())
+
 
 @pytest.fixture(scope="module")
 def tripool(registry):
     return load_contract(registry.pool_list(0))
 
+
 @pytest.fixture(scope="module")
 def tripool_lp_token(registry, tripool):
     return load_contract(registry.get_lp_token(tripool))
 
+
 @pytest.fixture(scope="module")
 def tripool_funded(registry, alice, tripool):
-    dai_address = registry.get_coins(tripool)[0]
-    dai = MintableForkToken(dai_address)
+    dai_addr = registry.get_coins(tripool)[0]
+    dai = MintableForkToken(dai_addr)
     amount = 1e21
-    dai.approve(tripool, amount, {'from': alice})
+    dai.approve(tripool, amount, {"from": alice})
     dai._mint_for_testing(alice, amount)
 
     amounts = [amount, 0, 0]
-    tripool.add_liquidity(amounts, 0, {'from': alice})
+    tripool.add_liquidity(amounts, 0, {"from": alice})
     return tripool
