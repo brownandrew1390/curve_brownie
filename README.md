@@ -7,6 +7,7 @@
 ## Installation / Dependencies
 
 - [Brownie](https://eth-brownie.readthedocs.io/en/stable/install.html)
+- [Ganache](https://trufflesuite.com/ganache/)
 - [Infura API Key](https://infura.io/)
 - [Etherscan API Key](https://etherscan.io/)
 
