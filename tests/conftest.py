@@ -3,6 +3,7 @@
 import pytest
 from brownie import Contract
 from brownie_tokens import MintableForkToken
+from helpers.utils import *
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -27,18 +28,9 @@ def bob(accounts):
     return accounts[1]
 
 
-def load_contract(addr):
-    try:
-        cont = Contract(addr)
-    except ValueError:
-        cont = Contract.from_explorer(addr)
-    return cont
-
-
 @pytest.fixture(scope="module")
 def registry():
-    return load_contract(Contract('0x0000000022d53366457f9d5e68ec105046fc4383').get_registry())
-
+    return load_registry()
 
 @pytest.fixture(scope="module")
 def tripool(registry):
@@ -54,10 +46,14 @@ def tripool_lp_token(registry, tripool):
 def tripool_funded(registry, alice, tripool):
     dai_addr = registry.get_coins(tripool)[0]
     dai = MintableForkToken(dai_addr)
-    amount = 1e21
+    amount = 100000 * 10 ** dai.decimals()
     dai.approve(tripool, amount, {"from": alice})
     dai._mint_for_testing(alice, amount)
 
     amounts = [amount, 0, 0]
     tripool.add_liquidity(amounts, 0, {"from": alice})
     return tripool
+
+@pytest.fixture(scope="module")
+def tripool_rewards(alice, tripool_funded):
+    return stake_into_rewards(tripool_funded, alice)
