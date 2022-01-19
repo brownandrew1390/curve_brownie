@@ -5,3 +5,6 @@ reports:
     - SafeMath
 
 dotenv: .env
+
+networks:
+    default: mainnet-fork
