@@ -3,7 +3,7 @@
 import pytest
 from brownie import Contract
 from brownie_tokens import MintableForkToken
-from helpers.utils import *
+from helpers_test.utils import *
 
 
 @pytest.fixture(scope="function", autouse=True)

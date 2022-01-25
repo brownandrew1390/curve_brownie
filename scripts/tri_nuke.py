@@ -1,9 +1,13 @@
 from brownie import *
 from brownie_tokens import MintableForkToken
 
+
+# "tricrypto" = Contract('0xD51a44d3FaE010294C616388b506AcdA1bfAAE46')
 tri = Contract("tricrypto")
+# "tricrypto_lp" = Contract('0xD51a44d3FaE010294C616388b506AcdA1bfAAE46').token()
 tri_lp = Contract("tricrypto_lp")
-tri_rewards = Contract("tricrypto_rewards") # FIND ADDRESS & SET ALIAS
+# "tricrypto_rewards" = reg.get_gauges(Contract('0xD51a44d3FaE010294C616388b506AcdA1bfAAE46'))[0][0]
+tri_rewards = Contract("tricrypto_rewards")
 test_addr = accounts[0]
 
 coin_id = 0
